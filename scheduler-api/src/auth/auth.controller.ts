@@ -43,7 +43,7 @@ export class AuthController {
     @ApiBearerAuth()
     @Get()
     @HttpCode(HttpStatus.OK)
-    @UseGuards(AuthGuard())
+    @UseGuards(AuthGuard('jwt'))
     async getUserWithToken(@Usr() user: AuthUser): Promise<UserResponse> {
         return UserResponse.fromUserEntity(user);
     }

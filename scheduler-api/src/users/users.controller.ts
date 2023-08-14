@@ -23,7 +23,7 @@ export class UsersController {
     @ApiBearerAuth()
     @Post('')
     @HttpCode(HttpStatus.CREATED)
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF)
     async createUser(
         @Body() createUserRequest: CreateUserRequest,
@@ -34,7 +34,7 @@ export class UsersController {
     @ApiBearerAuth()
     @Get('/:id')
     @HttpCode(HttpStatus.OK)
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF)
     async getUser(@Param('id', ParseIntPipe) id: number): Promise<UserResponse> {
         return this.userService.getUserById(id);
@@ -43,7 +43,7 @@ export class UsersController {
     @ApiBearerAuth()
     @Get('/hubspot/:userId')
     @HttpCode(HttpStatus.OK)
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF)
     async getUserByHubSpotUserId(@Param('userId', ParseIntPipe) hubspotUserId: number): Promise<UserResponse> {
         return this.userService.getByHubspotUserId(hubspotUserId);

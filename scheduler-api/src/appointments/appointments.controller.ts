@@ -18,7 +18,7 @@ export class AppointmentsController {
 
     @Get("/all/user")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async getAppointmentsForUser(
         @Usr() user: User,
@@ -28,7 +28,7 @@ export class AppointmentsController {
 
     @Get("/upcoming/user")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async getUpcomingAppointmentsForUser(
         @Usr() user: User,
@@ -38,7 +38,7 @@ export class AppointmentsController {
 
     @Get("/all/svc-tech/:techId")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async getAppointmentsForSvcTech(@Param("techId", ParseIntPipe) techId: number) {
         return this.appointmentsService.getAppointmentsForSvcTech(techId);
@@ -46,7 +46,7 @@ export class AppointmentsController {
 
     @Get("/upcoming/svc-tech/:techId")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async getUpcomingAppointmentsForSvcTech(@Param("techId", ParseIntPipe) techId: number) {
         return this.appointmentsService.getUpcomingAppointmentsForSvcTech(techId);
@@ -54,7 +54,7 @@ export class AppointmentsController {
 
     @Post()
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async scheduleAppointment(
         @Usr() user: User,
@@ -65,7 +65,7 @@ export class AppointmentsController {
 
     @Delete("/:id")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async cancelAppointment(@Param("id", ParseIntPipe) id: number) {
         return this.appointmentsService.cancelAppointment(id);
@@ -73,7 +73,7 @@ export class AppointmentsController {
 
     @Patch("/:id/complete")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async completeAppointment(@Param("id", ParseIntPipe) id: number) {
         return this.appointmentsService.completeAppointment(id);
@@ -81,7 +81,7 @@ export class AppointmentsController {
 
     @Patch("/:id/reschedule")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async rescheduleAppointment(
         @Param("id", ParseIntPipe) id: number,
@@ -92,7 +92,7 @@ export class AppointmentsController {
 
     @Patch("/:id/notes")
     @ApiBearerAuth()
-    @UseGuards(AuthGuard(), RolesGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
     async updateAppointmentNotes(
         @Param("id", ParseIntPipe) id: number,

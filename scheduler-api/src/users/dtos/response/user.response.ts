@@ -1,20 +1,29 @@
 import type {Role, User} from '@prisma/client';
+import {ApiProperty} from "@nestjs/swagger";
 
 export class UserResponse {
+    @ApiProperty()
     id: number;
 
+    @ApiProperty()
     email: string;
 
+    @ApiProperty()
     name: string;
 
+    @ApiProperty()
     firstName: string;
 
+    @ApiProperty()
     lastName: string
 
+    @ApiProperty()
     imageUrl: string | null;
 
+    @ApiProperty()
     phoneNumber: string;
 
+    @ApiProperty()
     role: Role;
     static fromUserEntity(entity: User): UserResponse {
         const response = new UserResponse();
