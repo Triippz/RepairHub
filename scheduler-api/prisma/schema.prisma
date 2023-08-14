@@ -1,0 +1,91 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+  STAFF
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum AppointmentType {
+  INSTALLATION
+  REPAIR
+  MAINTENANCE
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id            Int           @id @default(autoincrement())
+  email         String        @unique
+  firstName     String
+  lastName      String
+  phoneNumber   String
+  imageUrl      String?
+  password      String
+  role          Role          @default(USER)
+  portalId      Int?
+  hubspotUserId Int?
+  appointments  Appointment[]
+
+  @@unique([portalId, hubspotUserId], name: "portalId_hubspotUserId")
+  @@index([firstName, lastName], name: "name")
+}
+
+model ServiceTechnician {
+  id           Int            @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String         @unique
+  imageUrl     String?
+  appointments Appointment[]
+  workingHours WorkingHours[]
+}
+
+model WorkingHours {
+  id                  Int               @id @default(autoincrement())
+  day                 DayOfWeek
+  startHour           DateTime
+  endHour             DateTime
+  serviceTechnicianId Int
+  serviceTechnician   ServiceTechnician @relation(fields: [serviceTechnicianId], references: [id])
+
+  @@unique([serviceTechnicianId, day])
+}
+
+model Appointment {
+  id                  Int               @id @default(autoincrement())
+  startTime           DateTime
+  endTime             DateTime
+  notes               String?
+  appointmentType     AppointmentType   @default(INSTALLATION)
+  appointmentStatus   AppointmentStatus @default(SCHEDULED)
+  userId              Int
+  serviceTechnicianId Int
+  user                User              @relation(fields: [userId], references: [id])
+  serviceTechnician   ServiceTechnician @relation(fields: [serviceTechnicianId], references: [id])
+
+  @@unique([serviceTechnicianId, startTime, endTime])
+}
