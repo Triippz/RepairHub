@@ -24,6 +24,9 @@ export class UserResponse {
     phoneNumber: string;
 
     @ApiProperty()
+    hubspotUserId: number;
+
+    @ApiProperty()
     role: Role;
     static fromUserEntity(entity: User): UserResponse {
         const response = new UserResponse();

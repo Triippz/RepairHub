@@ -12,13 +12,14 @@ const getHubSpotUser = async (contactId) => {
 }
 
 exports.main = async (context = {}, sendResponse) => {
-    const {accessToken, contactId} = context.parameters
+    const {accessToken, userInfo} = context.parameters
 
-    const contact = await getHubSpotUser(contactId);
+    const contact = await getHubSpotUser(userInfo.hubspotUserId);
     const createUserRequest = {
-        email: contact.properties.email,
-        firstName: contact.properties.firstname,
-        lastName: contact.properties.lastname,
+        email: userInfo.email,
+        firstName: userInfo.firstname,
+        lastName: userInfo.lastname,
+        hubspotUserId: userInfo.hubspotUserId,
         phone: contact.properties.phone,
         imageUrl: contact.properties.imageurl,
         password: "testingpassword",

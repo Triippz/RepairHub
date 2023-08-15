@@ -50,8 +50,10 @@ export class UsersService {
                 role: Role.USER,
                 firstName: createUser.firstName,
                 lastName: createUser.lastName,
-                imageUrl: createUser.imageUrl,
-                phoneNumber: createUser.phoneNumber,
+                imageUrl: createUser?.imageUrl,
+                phoneNumber: createUser?.phoneNumber,
+                hubspotUserId: createUser.hubspotUserId,
+                portalId: config.hubspot.portalId
             },
         });
 

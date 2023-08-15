@@ -8,21 +8,43 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
     const [loadingUser, setLoadingUser] = useState(false);
 
     const retrieveHubUser = React.useCallback(() => {
+        console.log(context.user)
         setLoadingUser(true);
         runServerless({
             name: 'getUserByHubspotUserId',
             parameters: {accessToken, hubspotUserId: context.user.id}
         }).then((resp) => {
-            console.log(resp)
-            if (resp.status === "SUCCESS") {
-                setHubspotUser(resp.body);
+            console.log("response", resp.response)
+            if (resp.response.status === "SUCCESS") {
+                setHubspotUser(resp.response.body.data);
                 setLoadingUser(false);
             } else {
-                sendAlert({message: resp.message});
                 setLoadingUser(false);
             }
         });
-    }, [runServerless, setHubspotUser, sendAlert]);
+    }, [runServerless, setHubspotUser]);
+
+    const createSystemUser = React.useCallback(() => {
+        const userInfo = {
+            firstName: context.user.firstName,
+            lastName: context.user.lastName,
+            email: context.user.email,
+            hubspotUserId: context.user.id
+        }
+
+        runServerless({
+            name: 'createUser',
+            parameters: {accessToken, hubspotUserId: userInfo}
+        }).then((resp) => {
+            console.log("response", resp.response)
+            if (resp.response.status === "SUCCESS") {
+                setHubspotUser(resp.response.body.data);
+                setLoadingUser(false);
+            } else {
+                setLoadingUser(false);
+            }
+        });
+    }, [context.user.firstName, context.user.lastName, context.user.email, context.user.id, runServerless, setHubspotUser])
 
     React.useEffect(() => {
         retrieveHubUser();
@@ -38,41 +60,22 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
 
     return (
         <>
-            <Text>
-                <Text format={{fontWeight: 'bold'}}>
-                    Your first UI extension is ready!
-                </Text>
-                Congratulations, {context.user.id}! You just deployed your first
-                HubSpot UI extension. This example demonstrates how you would send
-                parameters from your React frontend to the serverless function and get a
-                response back.
-            </Text>
-            <Divider/>
-            <Stack>
-                <Text>
-                    What now? Explore all available{' '}
-                    <Link href="https://developers.hubspot.com/docs/platform/ui-extension-components">
-                        UI components
-                    </Link>
-                    , get an overview of{' '}
-                    <Link href="https://developers.hubspot.com/docs/platform/ui-extensions-overview">
-                        UI extensions
-                    </Link>
-                    , learn how to{' '}
-                    <Link href="https://developers.hubspot.com/docs/platform/create-ui-extensions">
-                        add a new custom card
-                    </Link>
-                    , jump right in with our{' '}
-                    <Link href="https://developers.hubspot.com/docs/platform/ui-extensions-quickstart">
-                        Quickstart Guide
-                    </Link>
-                    , or check out our{' '}
-                    <Link href="https://github.com/HubSpot/ui-extensions-react-examples">
-                        code Samples
-                    </Link>
-                    .
-                </Text>
-            </Stack>
+            {hubspotUser
+                ? (
+                    <>
+                        <Text>User Details</Text>
+                    </>
+                )
+                : (
+                    <>
+                        <Text>
+                            No User was found in the RepairHub system. Please Create a new one.
+                        </Text>
+
+                        <Button>Create User</Button>
+                    </>
+                )
+            }
         </>
     );
 };

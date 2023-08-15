@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty, IsString} from "class-validator";
+import {IsEmail, IsNotEmpty, IsNumber, IsString} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
 export class CreateUserRequest {
@@ -29,4 +29,8 @@ export class CreateUserRequest {
 
     @ApiProperty()
     imageUrl: string;
+
+    @ApiProperty()
+    @IsNumber()
+    hubspotUserId: number
 }
