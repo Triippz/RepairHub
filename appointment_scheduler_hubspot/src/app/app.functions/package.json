@@ -2,7 +2,7 @@
   "name": "example-function",
   "version": "0.1.0",
   "description": "",
-  "main": "example-function.js",
+  "main": "./auth/user-login.js",
   "author": "HubSpot",
   "license": "MIT",
   "dependencies": {

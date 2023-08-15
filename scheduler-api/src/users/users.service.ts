@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import {AuthUser} from '../auth/auth-user';
 import {PrismaService} from "nestjs-prisma";
 import {CreateUserRequest} from "./dtos/request/create-user.request";
@@ -21,7 +21,12 @@ export class UsersService {
         const user = await this.prisma.user.findUnique({
             where: {id},
         });
-        return user ? UserResponse.fromUserEntity(user) : null;
+
+        if (!user) {
+            throw new NotFoundException(`User with UserID~${id} was not found`);
+        }
+
+        return UserResponse.fromUserEntity(user)
     }
 
 
@@ -63,6 +68,9 @@ export class UsersService {
             }
         });
 
-        return user ? UserResponse.fromUserEntity(user) : null;
+        if (!user) {
+            throw new NotFoundException(`User with HubSpot UserID~${hubspotUserId} was not found`);
+        }
+        return UserResponse.fromUserEntity(user);
     }
 }

@@ -2,8 +2,20 @@
   "runtime": "nodejs16.x",
   "version": "1.0",
   "appFunctions": {
-    "myFunc": {
-      "file": "example-function.js",
+    "userLogin": {
+      "file": "./auth/user-login.js",
+      "secrets": []
+    },
+    "getCurrentUser": {
+      "file": "./auth/get-current-user.js",
+      "secrets": []
+    },
+    "createUser": {
+      "file": "./users/create-user.js",
+      "secrets": []
+    },
+    "getUserByHubspotUserId": {
+      "file": "./users/get-user-by-hub-user-id.js",
       "secrets": []
     }
   }

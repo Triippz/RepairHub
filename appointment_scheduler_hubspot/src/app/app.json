@@ -1,6 +1,6 @@
 {
-  "name": "Get started App with React",
-  "description": "This is an example of private app that shows a custom card on the Contact record tab built with React-based frontend. This card demonstrates simple handshake with HubSpot's serverless backend.",
+  "name": "RepairHub Scheduler",
+  "description": "Your number one place for HubSpot repairs of your home.",
   "uid": "get_started_app",
   "scopes": ["crm.objects.contacts.read", "crm.objects.contacts.write"],
   "public": false,
@@ -8,7 +8,7 @@
     "crm": {
       "cards": [
         {
-          "file": "extensions/example-card.json"
+          "file": "extensions/app-management-card.json"
         }
       ]
     }

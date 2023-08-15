@@ -1,0 +1,12 @@
+{
+  "type": "crm-card",
+  "data": {
+    "title": "Manage Gym In App",
+    "uid": "manage_gym_in_app_card",
+    "location": "crm.record.tab",
+    "module": {
+      "file": "AppManagement.tsx"
+    },
+    "objectTypes": [{ "name": "contacts" }, { "name": "companies" }]
+  }
+}

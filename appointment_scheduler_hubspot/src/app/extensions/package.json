@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "license": "MIT",
-  "main": "Example.jsx",
+  "main": "AppManagement.tsx",
   "scripts": {
     "dev": "hs-ui-extensions-dev-server dev",
     "build": "hs-ui-extensions-dev-server build"
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@hubspot/ui-extensions": "latest",
+    "axios": "^1.4.0",
     "react": "^18.2.0"
   }
 }

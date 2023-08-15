@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {PrismaService} from "nestjs-prisma";
 
 @Injectable()
@@ -15,11 +15,17 @@ export class SvcTechService {
     }
 
     async getTech(id: number) {
-        return this.prisma.serviceTechnician.findUnique({
+        const tech = await this.prisma.serviceTechnician.findUnique({
             where: {id},
             include: {
                 workingHours: true,
             }
         });
+
+        if (!tech) {
+            throw new NotFoundException(`Service Tech with ID~${id} was not found`);
+        }
+
+        return tech;
     }
 }
