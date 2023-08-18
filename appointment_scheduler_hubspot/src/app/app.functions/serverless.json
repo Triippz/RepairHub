@@ -12,7 +12,7 @@
     },
     "createUser": {
       "file": "./users/create-user.js",
-      "secrets": []
+      "secrets": ["PRIVATE_APP_ACCESS_TOKEN"]
     },
     "getUserByHubspotUserId": {
       "file": "./users/get-user-by-hub-user-id.js",

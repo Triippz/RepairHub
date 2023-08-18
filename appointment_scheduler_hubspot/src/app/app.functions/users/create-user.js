@@ -1,20 +1,22 @@
 const axios = require('axios');
 const hubspot = require('@hubspot/api-client');
 
-const getHubSpotUser = async (contactId) => {
+const getHubSpotUser = async (contactId, privateAppToken) => {
     const hubspotClient = new hubspot.Client({
-        accessToken: context.secrets.PRIVATE_APP_ACCESS_TOKEN,
+        accessToken: privateAppToken,
     });
 
-    const apiResponse = await hubspotClient.crm.contacts.basicApi.getById(contactId, undefined, undefined, undefined, false);
+    // const apiResponse = await hubspotClient.crm.contacts.basicApi.getPage();
+    const apiResponse = await hubspotClient.crm.contacts.basicApi.getById(contactId, ["phone"]);
     console.log(JSON.stringify(apiResponse, null, 2));
     return apiResponse;
 }
 
 exports.main = async (context = {}, sendResponse) => {
     const {accessToken, userInfo} = context.parameters
+    console.log(context)
 
-    const contact = await getHubSpotUser(userInfo.hubspotUserId);
+    const contact = await getHubSpotUser(userInfo.hubspotUserId, context.secrets.PRIVATE_APP_ACCESS_TOKEN);
     const createUserRequest = {
         email: userInfo.email,
         firstName: userInfo.firstname,
@@ -25,16 +27,18 @@ exports.main = async (context = {}, sendResponse) => {
         password: "testingpassword",
     }
 
-    const response = await axios.post('https://hubspotservicescheduler-production.up.railway.app/users', createUserRequest, {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        }
-    });
+    console.log(createUserRequest);
 
-    console.log(response.data)
+    // const response = await axios.post('https://hubspotservicescheduler-production.up.railway.app/users', createUserRequest, {
+    //     headers: {
+    //         'Authorization': `Bearer ${accessToken}`,
+    //     }
+    // });
+
+    // console.log(response.data)
     sendResponse({
         status: "SUCCESS",
-        body: response.data
+        body: "ok"
     });
 
 };

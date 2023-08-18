@@ -6,6 +6,7 @@ import {Context} from "../Context";
 const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties}) => {
     const {currentUser, accessToken, hubspotUser, setHubspotUser} = useContext(Context);
     const [loadingUser, setLoadingUser] = useState(false);
+    const [creatingUser, setCreatingUser] = useState(false);
 
     const retrieveHubUser = React.useCallback(() => {
         console.log(context.user)
@@ -25,6 +26,8 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
     }, [runServerless, setHubspotUser]);
 
     const createSystemUser = React.useCallback(() => {
+        setCreatingUser(true);
+        console.log(context)
         const userInfo = {
             firstName: context.user.firstName,
             lastName: context.user.lastName,
@@ -34,16 +37,20 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
 
         runServerless({
             name: 'createUser',
-            parameters: {accessToken, hubspotUserId: userInfo}
+            parameters: {accessToken, userInfo}
         }).then((resp) => {
-            console.log("response", resp.response)
-            if (resp.response.status === "SUCCESS") {
+            console.log("response", resp)
+            if (resp.status === "SUCCESS") {
                 setHubspotUser(resp.response.body.data);
                 setLoadingUser(false);
             } else {
                 setLoadingUser(false);
             }
-        });
+            setCreatingUser(false);
+        }).catch((e) => {
+            console.log(e)
+            setCreatingUser(false)
+        })
     }, [context.user.firstName, context.user.lastName, context.user.email, context.user.id, runServerless, setHubspotUser])
 
     React.useEffect(() => {
@@ -54,6 +61,14 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
         return (
             <>
                 <LoadingSpinner label="Retrieving User Information..." />
+            </>
+        )
+    }
+
+    if (creatingUser) {
+        return (
+            <>
+                <LoadingSpinner label="Creating System User..." />
             </>
         )
     }
@@ -72,7 +87,9 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
                             No User was found in the RepairHub system. Please Create a new one.
                         </Text>
 
-                        <Button>Create User</Button>
+                        <Button
+                            onClick={() => createSystemUser()}
+                        >Create User</Button>
                     </>
                 )
             }
