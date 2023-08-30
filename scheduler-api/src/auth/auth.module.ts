@@ -7,6 +7,9 @@ import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import config from '../config';
+import { ApiKeyStrategy } from './strategies/api-key.strategy';
+import { BasicStrategy } from './strategies/basic.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
@@ -19,7 +22,14 @@ import config from '../config';
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy, PrismaService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    BasicStrategy,
+    JwtStrategy,
+    ApiKeyStrategy,
+    PrismaService,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
