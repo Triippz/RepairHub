@@ -65,4 +65,17 @@ free tier and is very easy to use. Railway also has a CLI that can be installed 
 ### Setup HubSpot
 Since HubSpot doesn't allow us to specify a sub-path within our repository, to listen to changes to, like railyway. We are going to just use `hs project upload` for this example. This GitHub thing could change in the future, so keep your eyes out even if this repo isnt updated.
 
+### Goals
+These will be done slowly over time, as I have a few minutes during the workday and when my team does some fun coding projects.
 
+- [x] Create a faux API to simulate a company's backend service
+- [ ] Create a UI extension that allows a CSR to schedule an appointment for a customer
+- [ ] Create a serverless function that acts as a proxy to the API
+- [ ] Create a private app that allows the UI extension to authenticate with the API
+- [ ] Create a website theme using React Themes (in beta) to replace the default theme
+- [ ] Create a custom object to store the appointment data
+- [ ] Create a workflow for appointment reminders/lifecycle that is triggered via the UI extension and the api backend
+- [ ] Create a custom report that shows the number of appointments scheduled per technician
+- [ ] Create a custom report that shows the number of appointments scheduled per customer
+- [ ] Create a custom report that shows the number of appointments scheduled per day/month/year
+- [ ] Create notes that are stored in HubDB for each appointment, which who made the note and when
