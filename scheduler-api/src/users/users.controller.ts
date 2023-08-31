@@ -42,7 +42,7 @@ export class UsersController {
     @HttpCode(HttpStatus.OK)
     @UseGuards(ApiKeyGuard, RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF)
-    async getUserByHubSpotUserId(@Param('userId', ParseIntPipe) hubspotUserId: number): Promise<UserResponse> {
+    async getUserByHubSpotUserId(@Param('userId') hubspotUserId: string): Promise<UserResponse> {
         return this.userService.getByHubspotUserId(hubspotUserId);
     }
 }

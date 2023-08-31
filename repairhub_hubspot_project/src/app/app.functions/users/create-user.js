@@ -21,22 +21,32 @@ exports.main = async (context = {}, sendResponse) => {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         hubspotUserId: userInfo.hubspotUserId,
+        portalId: userInfo.portalId,
         phone: userInfo.phone,
         password: "testingpassword",
     }
 
     console.log(createUserRequest);
 
-    const response = await axios.post('https://api.repairhub.lol/users', createUserRequest, {
-        headers: {
-            'x-api-key': apiKey,
-        }
-    });
+    try {
+        const response = await axios.post('https://api.repairhub.lol/users', createUserRequest, {
+            headers: {
+                'x-api-key': apiKey,
+            }
+        });
 
-    console.log(response.data)
-    sendResponse({
-        status: "SUCCESS",
-        body: "ok"
-    });
+        console.log(response.data)
+
+        sendResponse({
+            status: "SUCCESS",
+            body: response.data
+        });
+    } catch (e) {
+        console.log("error", e.response.data);
+        sendResponse({
+            status: "ERROR",
+            body: e.response.data
+        });
+    }
 
 };

@@ -11,7 +11,6 @@ const HomeScreen = ({context, runServerlessFunction, actions}) => {
     const {navigateTo} = useNavigation();
 
     const retrieveHubUser = React.useCallback(() => {
-        console.log(context.user)
         setLoadingUser(true);
         runServerlessFunction({
             name: 'getUserByHubspotUserId',

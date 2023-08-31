@@ -4,7 +4,7 @@ import {useContext, useState} from "react";
 import {Context} from "../Context";
 import {Button, ErrorState, LoadingSpinner, Text} from "@hubspot/ui-extensions";
 
-export const CreateUserScreen =({context, runServerlessFunction, actions}) => {
+export const CreateUserScreen = ({context, runServerlessFunction, actions}) => {
     const {navigateTo} = useNavigation();
     const {setHubspotUser} = useContext(Context);
     const [loadingUser, setLoadingUser] = useState(false);
@@ -15,32 +15,35 @@ export const CreateUserScreen =({context, runServerlessFunction, actions}) => {
 
     const createSystemUser = React.useCallback(() => {
         setCreatingUser(true);
-        actions.fetchCrmObjectProperties(["firstname", "lastname", "phone", "email", "hs_object_id"]).then(({firstname, lastname, phone, email, hs_object_id} : any) => {
-            const userInfo = {
-                firstName: firstname,
-                lastName: lastname,
-                phone: phone,
-                email: email,
-                hubspotUserId: hs_object_id
-            }
-
-            runServerlessFunction({
-                name: 'createUser',
-                parameters: {userInfo}
-            }).then((resp) => {
-                console.log("response", resp)
-                if (resp.status === "SUCCESS") {
-                    setHubspotUser(resp.response.body.data);
-                    setLoadingUser(false);
-                    navigateTo(Routes.HOME)
-                } else {
-                    setLoadingUser(false);
+        actions.fetchCrmObjectProperties(["firstname", "lastname", "phone", "email", "hs_object_id"])
+            .then(({firstname, lastname, phone, email, hs_object_id}: any) => {
+                console.log(typeof hs_object_id)
+                const userInfo = {
+                    firstName: firstname,
+                    lastName: lastname,
+                    phone: phone,
+                    email: email,
+                    hubspotUserId: hs_object_id,
+                    portalId: context.portal.id
                 }
-            }).catch((e) => {
-                console.log(e)
-                setErrorMessage(e.message);
+
+                runServerlessFunction({
+                    name: 'createUser',
+                    parameters: {userInfo}
+                }).then((resp) => {
+                    console.log("response", resp)
+                    if (resp.status === "SUCCESS") {
+                        setHubspotUser(resp.response.body.data);
+                        setLoadingUser(false);
+                        navigateTo(Routes.HOME)
+                    } else {
+                        setLoadingUser(false);
+                    }
+                }).catch((e) => {
+                    console.log(e)
+                    setErrorMessage(e.message);
+                })
             })
-        })
         setCreatingUser(false);
 
     }, [context.user.firstName, context.user.lastName, context.user.email, context.user.id, runServerlessFunction, setHubspotUser])

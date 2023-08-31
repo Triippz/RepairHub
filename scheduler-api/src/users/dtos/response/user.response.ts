@@ -24,7 +24,7 @@ export class UserResponse {
     phoneNumber: string;
 
     @ApiProperty()
-    hubspotUserId: number;
+    hubspotUserId: string;
 
     @ApiProperty()
     portalId: number;

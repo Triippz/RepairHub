@@ -47,7 +47,7 @@ model User {
   password      String
   role          Role          @default(USER)
   portalId      Int?
-  hubspotUserId Int?
+  hubspotUserId String?
   appointments  Appointment[]
   apiKeys       ApiKey[]
 
