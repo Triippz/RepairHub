@@ -35,17 +35,26 @@ exports.main = async (context = {}, sendResponse) => {
             }
         });
 
-        console.log(response.data)
+        console.log("response", response.data)
 
         sendResponse({
             status: "SUCCESS",
             body: response.data
         });
     } catch (e) {
-        console.log("error", e.response.data);
+        console.log(e.response.data);
+        let message = e.response.data.message;
+        if (Array.isArray(message)) {
+            message = message[0];
+        } else if (typeof message !== "string") {
+            message = "Unknown error";
+        } else {
+            message = e.response.data.message;
+        }
+
         sendResponse({
             status: "ERROR",
-            body: e.response.data
+            body: message
         });
     }
 

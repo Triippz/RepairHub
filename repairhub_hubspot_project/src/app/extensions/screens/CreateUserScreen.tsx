@@ -7,7 +7,6 @@ import {Button, ErrorState, LoadingSpinner, Text} from "@hubspot/ui-extensions";
 export const CreateUserScreen = ({context, runServerlessFunction, actions}) => {
     const {navigateTo} = useNavigation();
     const {setHubspotUser} = useContext(Context);
-    const [loadingUser, setLoadingUser] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
 
     const [creatingUser, setCreatingUser] = useState(false);
@@ -17,7 +16,6 @@ export const CreateUserScreen = ({context, runServerlessFunction, actions}) => {
         setCreatingUser(true);
         actions.fetchCrmObjectProperties(["firstname", "lastname", "phone", "email", "hs_object_id"])
             .then(({firstname, lastname, phone, email, hs_object_id}: any) => {
-                console.log(typeof hs_object_id)
                 const userInfo = {
                     firstName: firstname,
                     lastName: lastname,
@@ -31,16 +29,17 @@ export const CreateUserScreen = ({context, runServerlessFunction, actions}) => {
                     name: 'createUser',
                     parameters: {userInfo}
                 }).then((resp) => {
-                    console.log("response", resp)
-                    if (resp.status === "SUCCESS") {
+                    console.log("create esponse", resp.response)
+                    if (resp.response.status === "SUCCESS") {
                         setHubspotUser(resp.response.body.data);
-                        setLoadingUser(false);
                         navigateTo(Routes.HOME)
                     } else {
-                        setLoadingUser(false);
+                        console.log("create error", resp.response.body)
+
+                        setErrorMessage(resp.response.body);
                     }
                 }).catch((e) => {
-                    console.log(e)
+                    console.log("create error", e.body.message)
                     setErrorMessage(e.message);
                 })
             })
@@ -69,8 +68,8 @@ export const CreateUserScreen = ({context, runServerlessFunction, actions}) => {
             </Button>
 
             {errorMessage && (
-                <ErrorState title="Something went wrong while creating a new user in the app.">
-                    <Text>{errorMessage}</Text>
+                <ErrorState title="Something went wrong while creating a new user in the RepairHub system.">
+                    <Text>Please try again. If the problem persists, please reach out to your IT support.</Text>
                 </ErrorState>
             )}
         </>

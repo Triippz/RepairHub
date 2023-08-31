@@ -40,9 +40,9 @@ enum AppointmentStatus {
 model User {
   id            Int           @id @default(autoincrement())
   email         String        @unique
-  firstName     String
-  lastName      String
-  phoneNumber   String
+  firstName     String?
+  lastName      String?
+  phoneNumber   String?
   imageUrl      String?
   password      String
   role          Role          @default(USER)
