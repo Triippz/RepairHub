@@ -16,7 +16,6 @@ import { Role, User } from '@prisma/client';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AppRoles } from '../auth/decorators/role.decorator';
 import { AppointmentTimeRescheduleRequest } from './dtos/appointment-time-reschedule.request';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { ApiKeyGuard } from '../auth/guards/api-key.guard';
 
 @Controller('appointments')
@@ -24,7 +23,6 @@ export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
 
   @Get('/all/user')
-  @ApiBearerAuth()
   @UseGuards(ApiKeyGuard, RolesGuard)
   @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
   async getAppointmentsForUser(@Usr() user: User) {

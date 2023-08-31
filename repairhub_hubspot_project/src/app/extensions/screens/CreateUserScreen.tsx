@@ -2,7 +2,7 @@ import * as React from "react";
 import {Routes, useNavigation} from "../routing/useRouting";
 import {useContext, useState} from "react";
 import {Context} from "../Context";
-import {Button, LoadingSpinner, Text} from "@hubspot/ui-extensions";
+import {Button, ErrorState, LoadingSpinner, Text} from "@hubspot/ui-extensions";
 
 export const CreateUserScreen =({context, runServerlessFunction, actions}) => {
     const {navigateTo} = useNavigation();
@@ -48,7 +48,7 @@ export const CreateUserScreen =({context, runServerlessFunction, actions}) => {
     if (creatingUser) {
         return (
             <>
-                <LoadingSpinner label="Creating System User..." />
+                <LoadingSpinner label="Creating System User..." showLabel={true} layout="centered"/>
             </>
         )
     }
@@ -66,9 +66,9 @@ export const CreateUserScreen =({context, runServerlessFunction, actions}) => {
             </Button>
 
             {errorMessage && (
-                <Text>
-                    {errorMessage}
-                </Text>
+                <ErrorState title="Something went wrong while creating a new user in the app.">
+                    <Text>{errorMessage}</Text>
+                </ErrorState>
             )}
         </>
     )
