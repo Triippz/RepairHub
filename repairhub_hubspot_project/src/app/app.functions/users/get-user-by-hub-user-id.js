@@ -2,12 +2,13 @@ const axios = require('axios');
 
 
 exports.main = async (context = {}, sendResponse) => {
-    const {accessToken, hubspotUserId} = context.parameters
+    const {hubspotUserId} = context.parameters
+    const apiKey = process.env["APP_API_KEY"];
 
     try {
         const response = await axios.get(`https://hubspotservicescheduler-production.up.railway.app/users/hubspot/${hubspotUserId}`, {
             headers: {
-                'Authorization': `Bearer ${accessToken}`,
+                'x-api-key': apiKey,
             }
         });
 

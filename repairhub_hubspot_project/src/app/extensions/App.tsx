@@ -10,11 +10,11 @@ import useRouting from "./routing/useRouting";
 
 const Entry = ({context, runServerlessFunction, actions}) => {
     const { currentUser, setCurrentUser } = useContext(Context);
+    const { currentScreen, navigateTo, routeState } = useRouting();
+
     const [isLoading, setIsLoading] = React.useState(false);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [authenticationError, setAuthenticationError] = React.useState(null);
-
-    const { currentScreen, navigateTo } = useRouting();
 
 
     const getCurrentUser = React.useCallback(() => {

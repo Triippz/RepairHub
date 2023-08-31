@@ -13,10 +13,13 @@ const getHubSpotUser = async (contactId, privateAppToken) => {
 }
 
 exports.main = async (context = {}, sendResponse) => {
-    const {accessToken, userInfo} = context.parameters
-    console.log(context)
+    const {userInfo} = context.parameters
+    const apiKey = process.env["APP_API_KEY"];
+    const privateAppToken = context.secrets.PRIVATE_APP_ACCESS_TOKEN;
 
-    const contact = await getHubSpotUser(userInfo.hubspotUserId, context.secrets.PRIVATE_APP_ACCESS_TOKEN);
+    console.log(process.env)
+
+    const contact = await getHubSpotUser(userInfo.hubspotUserId, privateAppToken);
     const createUserRequest = {
         email: userInfo.email,
         firstName: userInfo.firstname,
@@ -31,7 +34,7 @@ exports.main = async (context = {}, sendResponse) => {
 
     // const response = await axios.post('https://hubspotservicescheduler-production.up.railway.app/users', createUserRequest, {
     //     headers: {
-    //         'Authorization': `Bearer ${accessToken}`,
+    //         'x-api-key': apiKey,
     //     }
     // });
 

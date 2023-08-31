@@ -4,7 +4,7 @@ import {Button, Divider, Input, Link, LoadingSpinner, Stack, Text} from "@hubspo
 import {Context} from "../Context";
 
 const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties}) => {
-    const {currentUser, accessToken, hubspotUser, setHubspotUser} = useContext(Context);
+    const {currentUser, hubspotUser, setHubspotUser} = useContext(Context);
     const [loadingUser, setLoadingUser] = useState(false);
     const [creatingUser, setCreatingUser] = useState(false);
 
@@ -13,7 +13,7 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
         setLoadingUser(true);
         runServerless({
             name: 'getUserByHubspotUserId',
-            parameters: {accessToken, hubspotUserId: context.user.id}
+            parameters: {hubspotUserId: context.user.id}
         }).then((resp) => {
             console.log("response", resp.response)
             if (resp.response.status === "SUCCESS") {
@@ -37,7 +37,7 @@ const MainScreen = ({context, runServerless, sendAlert, fetchCrmObjectProperties
 
         runServerless({
             name: 'createUser',
-            parameters: {accessToken, userInfo}
+            parameters: {userInfo}
         }).then((resp) => {
             console.log("response", resp)
             if (resp.status === "SUCCESS") {

@@ -5,7 +5,7 @@
     "uid": "repair_hub_card",
     "location": "crm.record.tab",
     "module": {
-      "file": "AppManagement.tsx"
+      "file": "App.tsx"
     },
     "objectTypes": [{ "name": "contacts" }],
     "fetch": {
