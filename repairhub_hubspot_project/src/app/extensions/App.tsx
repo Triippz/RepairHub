@@ -1,16 +1,18 @@
 import * as React from "react";
-import {
-    hubspot,
-} from '@hubspot/ui-extensions';
-import MainScreen from "./screens/MainScreen";
-import {Context, ContextProvider} from "./Context";
 import {useContext} from "react";
+import {hubspot,} from '@hubspot/ui-extensions';
+import MainScreen from "./screens/HomeScreen";
+import {Context, ContextProvider} from "./Context";
 import UnAuthenticatedScreen from "./screens/UnAuthenticatedScreen";
-import useRouting from "./routing/useRouting";
+import useRouting, {Routes} from "./routing/useRouting";
+import {Router} from "./routing/Router";
+import {Route} from "./routing/Route";
+import HomeScreen from "./screens/HomeScreen";
+import CreateUserScreen from "./screens/CreateUserScreen";
 
 const Entry = ({context, runServerlessFunction, actions}) => {
-    const { currentUser, setCurrentUser } = useContext(Context);
-    const { currentScreen, navigateTo, routeState } = useRouting();
+    const { setCurrentUser } = useContext(Context);
+    const { currentScreen, navigateTo, RoutingProvider } = useRouting();
 
     const [isLoading, setIsLoading] = React.useState(false);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -23,6 +25,7 @@ const Entry = ({context, runServerlessFunction, actions}) => {
             if (resp.response.status === "SUCCESS") {
                 setCurrentUser(resp.response.body);
                 setIsAuthenticated(true);
+                navigateTo(Routes.HOME)
             } else {
                 console.log(resp.response)
                 setIsAuthenticated(false);
@@ -48,12 +51,24 @@ const Entry = ({context, runServerlessFunction, actions}) => {
     }
 
     return (
-        <MainScreen
-            context={context}
-            runServerless={runServerlessFunction}
-            sendAlert={actions.addAlert}
-            fetchCrmObjectProperties={actions.fetchCrmObjectProperties}
-        />
+        <RoutingProvider>
+            <Router currentRoute={currentScreen}>
+                <Route
+                    path={Routes.HOME}
+                    component={HomeScreen}
+                    context={context}
+                    runServerlessFunction={runServerlessFunction}
+                    actions={actions}
+                />
+                <Route
+                    path={Routes.CREATE_USER}
+                    component={CreateUserScreen}
+                    context={context}
+                    runServerlessFunction={runServerlessFunction}
+                    actions={actions}
+                />
+            </Router>
+        </RoutingProvider>
     )
 }
 

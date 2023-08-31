@@ -15,7 +15,7 @@ const UnAuthenticatedScreen = ({context, refreshUser, errorMessage = undefined, 
 
                     {
                         errorMessage && (
-                            <Text variant="danger">{errorMessage}</Text>
+                            <Text>{errorMessage}</Text>
                         )
                     }
                 </>

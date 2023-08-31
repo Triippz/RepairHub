@@ -53,7 +53,7 @@ export class UsersService {
                 imageUrl: createUser?.imageUrl,
                 phoneNumber: createUser?.phoneNumber,
                 hubspotUserId: createUser.hubspotUserId,
-                portalId: config.hubspot.portalId
+                portalId: createUser.portalId
             },
         });
 

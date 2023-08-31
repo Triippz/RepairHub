@@ -27,6 +27,9 @@ export class UserResponse {
     hubspotUserId: number;
 
     @ApiProperty()
+    portalId: number;
+
+    @ApiProperty()
     role: Role;
     static fromUserEntity(entity: User): UserResponse {
         const response = new UserResponse();
@@ -40,6 +43,8 @@ export class UserResponse {
         response.imageUrl = entity.imageUrl;
         response.phoneNumber = entity.phoneNumber;
         response.role = entity.role;
+        response.hubspotUserId = entity.hubspotUserId;
+        response.portalId = entity.portalId;
         return response;
     }
 }

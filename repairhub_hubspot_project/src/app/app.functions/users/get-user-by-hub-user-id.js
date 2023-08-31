@@ -6,7 +6,7 @@ exports.main = async (context = {}, sendResponse) => {
     const apiKey = process.env["APP_API_KEY"];
 
     try {
-        const response = await axios.get(`https://hubspotservicescheduler-production.up.railway.app/users/hubspot/${hubspotUserId}`, {
+        const response = await axios.get(`https://api.repairhub.lol/users/hubspot/${hubspotUserId}`, {
             headers: {
                 'x-api-key': apiKey,
             }

@@ -25,12 +25,16 @@ export class CreateUserRequest {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    phoneNumber: string;
+    phoneNumber?: string;
 
     @ApiProperty()
-    imageUrl: string;
+    imageUrl?: string;
 
     @ApiProperty()
     @IsNumber()
     hubspotUserId: number
+
+    @ApiProperty()
+    @IsNumber()
+    portalId: number
 }

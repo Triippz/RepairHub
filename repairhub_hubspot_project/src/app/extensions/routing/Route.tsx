@@ -5,14 +5,28 @@ import {RouteStateProvider} from "./useRouteState";
 export interface RouteProps {
     path: Routes;
     component: React.ComponentType<any>;
+    context: any;
+    runServerlessFunction: any;
+    actions: any;
     routeState?: any;
     [key: string]: any;
 }
 
-export const Route: React.FC<RouteProps> = ({ component: Component, routeState, ...props }) => {
+export const Route: React.FC<RouteProps> = ({
+     component: Component,
+     context,
+     runServerlessFunction,
+     actions,
+     routeState,
+     ...props
+ }) => {
     return (
-        <RouteStateProvider state={routeState}>
-            <Component {...props} />
-        </RouteStateProvider>
+        <Component
+            {...props}
+            context={context}
+            runServerlessFunction={runServerlessFunction}
+            actions={actions}
+            routeState={routeState}
+        />
     );
 };

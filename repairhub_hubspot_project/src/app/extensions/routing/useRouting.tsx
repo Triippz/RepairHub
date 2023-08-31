@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import * as React from "react";
+import {createContext, useContext, useState} from 'react';
 
 export enum Routes {
     HOME = 'home',
@@ -6,7 +7,16 @@ export enum Routes {
     LOGIN = 'login',
 }
 
-function useRouting(initialScreen: Routes = Routes.HOME) {
+interface RoutingContextType {
+    navigateTo: (route: Routes, state?: any) => void;
+    currentScreen: Routes;
+    routeState: any;
+}
+
+const RoutingContext = createContext<RoutingContextType | undefined>(undefined);
+
+
+function useRouting(initialScreen: Routes = Routes.LOGIN) {
     const [currentScreen, setCurrentScreen] = useState<Routes>(initialScreen);
     const [routeState, setRouteState] = useState<any>(null);
 
@@ -18,9 +28,22 @@ function useRouting(initialScreen: Routes = Routes.HOME) {
     return {
         currentScreen,
         navigateTo,
-        routeState
+        routeState,
+        RoutingProvider: ({ children }: { children: React.ReactNode }) => (
+            <RoutingContext.Provider value={{ navigateTo, currentScreen, routeState }}>
+                {children}
+            </RoutingContext.Provider>
+        )
     };
 }
 
+
+export function useNavigation() {
+    const context = useContext(RoutingContext);
+    if (!context) {
+        throw new Error("useNavigation must be used within a RoutingProvider");
+    }
+    return context;
+}
 
 export default useRouting;

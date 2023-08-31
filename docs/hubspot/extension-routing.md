@@ -1,17 +1,18 @@
-# Faux Routing System for React
+# Faux Routing System with Authentication for React
 
-This document provides a guide on how to implement and use a faux routing system in React, which mimics the behavior of `react-router` without changing the actual URL route.
+This document provides a guide on implementing a faux routing system in React that mimics the behavior of `react-router` without changing the actual URL route. Additionally, it includes authentication logic and ensures that all screens have access to specific props.
 
 ## Table of Contents
 
 - [Setup](#setup)
 - [Components](#components)
-    - [Router](#router)
-    - [Route](#route)
+  - [Router](#router)
+  - [Route](#route)
+  - [LoginScreen](#loginscreen)
 - [Hooks](#hooks)
-    - [useRouting](#userouting)
-    - [useRouteState](#useroutestate)
+  - [useRouting](#userouting)
 - [Usage](#usage)
+- [Passing Props to All Screens](#passing-props-to-all-screens)
 
 ## Setup
 
@@ -29,7 +30,7 @@ export enum Routes {
 
 ### Router
 
-The `Router` component is responsible for rendering the appropriate component based on the current route.
+The `Router` component is responsible for rendering the appropriate component based on the current route and authentication status.
 
 ```tsx
 interface RouterProps {
@@ -50,18 +51,52 @@ const Router: React.FC<RouterProps> = ({ currentRoute, routeState, children }) =
 
 ### Route
 
-The `Route` component defines the mapping between routes and components. It can also pass additional props to the rendered component.
+The `Route` component defines the mapping between routes and components. It also ensures that specific props (`context`, `runServerlessFunction`, and `actions`) are passed to every screen.
 
 ```tsx
 interface RouteProps {
   path: Routes;
   component: React.ComponentType<any>;
+  context: any;
+  runServerlessFunction: any;
+  actions: any;
   routeState?: any;
   [key: string]: any;
 }
 
-const Route: React.FC<RouteProps> = ({ component: Component, routeState, ...props }) => {
-  return <Component {...props} routeState={routeState} />;
+const Route: React.FC<RouteProps> = ({ 
+  component: Component, 
+  context, 
+  runServerlessFunction, 
+  actions, 
+  routeState, 
+  ...props 
+}) => {
+  return (
+    <Component 
+      {...props} 
+      context={context} 
+      runServerlessFunction={runServerlessFunction} 
+      actions={actions} 
+      routeState={routeState} 
+    />
+  );
+};
+```
+
+### LoginScreen
+
+The `LoginScreen` component provides a way for users to authenticate.
+
+```tsx
+const LoginScreen: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
+  return (
+    <div>
+      <h1>Login</h1>
+      {/* Add your login form and logic here */}
+      <button onClick={onLogin}>Login</button>
+    </div>
+  );
 };
 ```
 
@@ -89,56 +124,66 @@ function useRouting(initialScreen: Routes = Routes.Home) {
 }
 ```
 
-### useRouteState
-
-The `useRouteState` hook allows components to access the route state passed during navigation.
-
-```tsx
-const RouteStateContext = React.createContext<any | null>(null);
-
-const RouteStateProvider: React.FC<{ state: any; children: React.ReactNode }> = ({ state, children }) => {
-  return (
-    <RouteStateContext.Provider value={state}>
-      {children}
-    </RouteStateContext.Provider>
-  );
-};
-
-function useRouteState<T = any>(): T | null {
-  return React.useContext(RouteStateContext);
-}
-```
-
 ## Usage
 
 To use the faux routing system:
 
 1. Set up the routes using the `Router` and `Route` components.
 2. Navigate between routes using the `navigateTo` function from the `useRouting` hook.
-3. Access the route state in components using the `useRouteState` hook.
+3. Handle authentication using the `LoginScreen` component and the `isAuthenticated` state.
 
 Example:
 
 ```tsx
-const App: React.FC = () => {
-  const { currentScreen, navigateTo, routeState } = useRouting();
+const App: React.FC = ({ context, runServerlessFunction, actions }) => {
+  const { currentScreen, navigateTo } = useRouting();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    navigateTo(Routes.Home);
+  };
+
+  if (!isAuthenticated) {
+    return <LoginScreen onLogin={handleLogin} />;
+  }
 
   return (
     <div>
+      {/* Navigation buttons */}
       <button onClick={() => navigateTo(Routes.Home)}>Home</button>
-      <button onClick={() => navigateTo(Routes.About, { from: 'Home' })}>About</button>
+      <button onClick={() => navigateTo(Routes.About)}>About</button>
       <button onClick={() => navigateTo(Routes.Contact)}>Contact</button>
 
-      <Router currentRoute={currentScreen} routeState={routeState}>
-        <Route path={Routes.Home} component={HomeScreen} />
-        <Route path={Routes.About} component={AboutScreen} />
-        <Route path={Routes.Contact} component={ContactScreen} />
+      {/* Router with Route components */}
+      <Router currentRoute={currentScreen}>
+        <Route 
+          path={Routes.Home} 
+          component={HomeScreen} 
+          context={context} 
+          runServerlessFunction={runServerlessFunction} 
+          actions={actions}
+        />
+        <Route 
+          path={Routes.About} 
+          component={AboutScreen} 
+          context={context} 
+          runServerlessFunction={runServerlessFunction} 
+          actions={actions}
+        />
+        <Route 
+          path={Routes.Contact} 
+          component={ContactScreen} 
+          context={context} 
+          runServerlessFunction={runServerlessFunction} 
+          actions={actions}
+        />
       </Router>
     </div>
   );
-}
+};
 ```
 
----
+## Passing Props to All Screens
 
-This markdown documentation provides an overview of the faux routing system, its components, hooks, and usage. You can expand on this documentation as needed, adding more details, examples, or explanations.
+With the current setup, every screen rendered by the `Route` component will receive the three props (`context`, `runServerlessFunction`, and `actions`). You can use these props directly within each screen component as needed.
