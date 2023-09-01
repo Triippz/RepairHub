@@ -2,39 +2,33 @@ const axios = require('axios');
 
 
 exports.main = async (context = {}, sendResponse) => {
-    const {hubspotUserId} = context.parameters
+    const {hubspotUserId, portalId} = context.parameters
     const apiKey = process.env["APP_API_KEY"];
 
     try {
-        const response = await axios.get(`https://api.repairhub.lol/users/hubspot/${hubspotUserId}`, {
+        const response = await axios.get(`https://api.repairhub.lol/users/hubspot/${hubspotUserId}/${portalId}`, {
             headers: {
                 'x-api-key': apiKey,
             }
         });
 
+        console.log("RESPONSE", response.data);
+
         sendResponse({
             status: "SUCCESS",
-            body: {
-                status: 200,
-                data: response.data
-            }
+            body: response.data
         });
     } catch (e) {
+        console.log("ERROR", e);
         if (e.response.data.status === 404) {
             sendResponse({
                 status: "FAILURE",
-                body: {
-                    status: 404,
-                    data: "User Not Found"
-                }
+                body: "User Not Found"
             });
         } else {
             sendResponse({
                 status: "FAILURE",
-                body: {
-                    status: e.response.data.status,
-                    data: e.response.data.message
-                }
+                body: e.response.data.message
             });
         }
 

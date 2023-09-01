@@ -2,8 +2,6 @@ import * as React from 'react';
 import {Routes} from "./useRouting";
 import {RouteProps} from "./Route";
 
-
-
 interface RouterProps {
     currentRoute: Routes;
     children: React.ReactElement<RouteProps>[] | React.ReactElement<RouteProps>;

@@ -5,6 +5,7 @@ import { CreateUserRequest } from './dtos/request/create-user.request';
 import { UserResponse } from './dtos/response/user.response';
 import { Role } from '@prisma/client';
 import config from '../config';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -42,7 +43,7 @@ export class UsersService {
     const user = await this.prisma.user.create({
       data: {
         email: normalizedEmail,
-        password: createUser.password,
+        password: bcrypt.hashSync(createUser.password, 10),
         role: Role.USER,
         firstName: createUser.firstName,
         lastName: createUser.lastName,
@@ -58,11 +59,12 @@ export class UsersService {
 
   async getByHubspotUserId(
     hubspotUserId: string,
+    portalId: number,
   ): Promise<UserResponse | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         portalId_hubspotUserId: {
-          portalId: config.hubspot.portalId,
+          portalId: portalId,
           hubspotUserId: hubspotUserId,
         },
       },

@@ -29,17 +29,13 @@ export const CreateUserScreen = ({context, runServerlessFunction, actions}) => {
                     name: 'createUser',
                     parameters: {userInfo}
                 }).then((resp) => {
-                    console.log("create esponse", resp.response)
                     if (resp.response.status === "SUCCESS") {
                         setHubspotUser(resp.response.body.data);
                         navigateTo(Routes.HOME)
                     } else {
-                        console.log("create error", resp.response.body)
-
                         setErrorMessage(resp.response.body);
                     }
                 }).catch((e) => {
-                    console.log("create error", e.body.message)
                     setErrorMessage(e.message);
                 })
             })

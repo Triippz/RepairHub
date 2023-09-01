@@ -1,6 +1,5 @@
 import {Routes} from "./useRouting";
 import * as React from "react";
-import {RouteStateProvider} from "./useRouteState";
 
 export interface RouteProps {
     path: Routes;

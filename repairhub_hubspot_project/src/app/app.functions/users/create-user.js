@@ -1,16 +1,16 @@
 const axios = require('axios');
 const hubspot = require('@hubspot/api-client');
 
-// const getHubSpotUser = async (contactId, privateAppToken) => {
-//     const hubspotClient = new hubspot.Client({
-//         accessToken: privateAppToken,
-//     });
-//
-//     // const apiResponse = await hubspotClient.crm.contacts.basicApi.getPage();
-//     const apiResponse = await hubspotClient.crm.contacts.basicApi.getById(contactId, ["phone"]);
-//     console.log(JSON.stringify(apiResponse, null, 2));
-//     return apiResponse;
-// }
+// TODO: Add user id from app to contact property -- repairhubuserid
+
+function addRepairHubUserIdToContact(portalId, contactId, repairHubUserId) {
+    const hubSpotClient = new hubspot.Client({
+        accessToken: process.env['PRIVATE_APP_ACCESS_TOKEN'],
+    });
+
+
+    // hubSpotClient.crm.contacts.basicApi.update()
+}
 
 exports.main = async (context = {}, sendResponse) => {
     const {userInfo} = context.parameters
@@ -26,8 +26,6 @@ exports.main = async (context = {}, sendResponse) => {
         password: "testingpassword",
     }
 
-    console.log(createUserRequest);
-
     try {
         const response = await axios.post('https://api.repairhub.lol/users', createUserRequest, {
             headers: {
@@ -35,14 +33,14 @@ exports.main = async (context = {}, sendResponse) => {
             }
         });
 
-        console.log("response", response.data)
-
         sendResponse({
             status: "SUCCESS",
             body: response.data
         });
     } catch (e) {
         console.log(e.response.data);
+
+        // I should handle error messages better, server side
         let message = e.response.data.message;
         if (Array.isArray(message)) {
             message = message[0];

@@ -13,6 +13,14 @@
     "getUserByHubspotUserId": {
       "file": "./users/get-user-by-hub-user-id.js",
       "secrets": ["APP_API_KEY"]
+    },
+    "getUpComingAppointments": {
+      "file": "./appointments/get-upcoming-appointments.js",
+      "secrets": ["APP_API_KEY"]
+    },
+    "getPastAppointments": {
+      "file": "./appointments/get-past-appointments.js",
+      "secrets": ["APP_API_KEY"]
     }
   }
 }

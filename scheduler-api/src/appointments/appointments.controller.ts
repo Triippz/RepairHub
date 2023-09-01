@@ -22,18 +22,29 @@ import { ApiKeyGuard } from '../auth/guards/api-key.guard';
 export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
 
-  @Get('/all/user')
+  @Get('/all/user/:userId')
   @UseGuards(ApiKeyGuard, RolesGuard)
   @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
-  async getAppointmentsForUser(@Usr() user: User) {
-    return this.appointmentsService.getAllAppointmentsForUser(user.id);
+  async getAppointmentsForUser(@Param('userId', ParseIntPipe) userId: number) {
+    return this.appointmentsService.getAllAppointmentsForUser(userId);
   }
 
-  @Get('/upcoming/user')
+  @Get('/upcoming/user/:userId')
   @UseGuards(ApiKeyGuard, RolesGuard)
   @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
-  async getUpcomingAppointmentsForUser(@Usr() user: User) {
-    return this.appointmentsService.getUpcomingAppointmentsForUser(user.id);
+  async getUpcomingAppointmentsForUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.appointmentsService.getUpcomingAppointmentsForUser(userId);
+  }
+
+  @Get('/past/user/:userId')
+  @UseGuards(ApiKeyGuard, RolesGuard)
+  @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
+  async getPastAppointmentsForUser(
+      @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.appointmentsService.getPastAppointmentsForUser(userId);
   }
 
   @Get('/all/svc-tech/:techId')
@@ -54,14 +65,14 @@ export class AppointmentsController {
     return this.appointmentsService.getUpcomingAppointmentsForSvcTech(techId);
   }
 
-  @Post()
+  @Post('/:userId')
   @UseGuards(ApiKeyGuard, RolesGuard)
   @AppRoles(Role.ADMIN, Role.STAFF, Role.USER)
   async scheduleAppointment(
-    @Usr() user: User,
+    @Param('userId', ParseIntPipe) userId: number,
     @Body() appointment: AppointmentScheduleRequest,
   ) {
-    return this.appointmentsService.scheduleAppointment(user, appointment);
+    return this.appointmentsService.scheduleAppointment(userId, appointment);
   }
 
   @Delete('/:id')

@@ -31,6 +31,17 @@ export class AppointmentsService {
         });
     }
 
+    async getPastAppointmentsForUser(userId: number) {
+        return this.prisma.appointment.findMany({
+            where: {
+                userId: userId,
+                endTime: {
+                    lt: new Date()
+                }
+            }
+        });
+    }
+
     async getAppointmentsForSvcTech(svcTechId: number) {
         return this.prisma.appointment.findMany({
             where: {
@@ -50,7 +61,7 @@ export class AppointmentsService {
         });
     }
 
-    async scheduleAppointment(user: User, appointment: AppointmentScheduleRequest) {
+    async scheduleAppointment(userId: number, appointment: AppointmentScheduleRequest) {
         return this.prisma.appointment.create({
             data: {
                 startTime: appointment.startTime,
@@ -59,7 +70,7 @@ export class AppointmentsService {
                 notes: appointment.notes,
                 user: {
                     connect: {
-                        id: user.id
+                        id: userId
                     }
                 },
                 serviceTechnician: {

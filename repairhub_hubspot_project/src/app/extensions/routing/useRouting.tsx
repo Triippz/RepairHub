@@ -5,6 +5,7 @@ export enum Routes {
     HOME = 'home',
     CREATE_USER = 'create_user',
     LOGIN = 'login',
+    SCHEDULE_APPOINTMENT = 'schedule_appointment',
 }
 
 interface RoutingContextType {

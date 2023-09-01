@@ -20,7 +20,7 @@ import {ApiKeyGuard} from "../auth/guards/api-key.guard";
 export class UsersController {
     constructor(private readonly userService: UsersService) {}
 
-    @Post('')
+    @Post()
     @HttpCode(HttpStatus.CREATED)
     @UseGuards(ApiKeyGuard, RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF)
@@ -38,11 +38,14 @@ export class UsersController {
         return this.userService.getUserById(id);
     }
 
-    @Get('/hubspot/:userId')
+    @Get('/hubspot/:userId/:portalId')
     @HttpCode(HttpStatus.OK)
     @UseGuards(ApiKeyGuard, RolesGuard)
     @AppRoles(Role.ADMIN, Role.STAFF)
-    async getUserByHubSpotUserId(@Param('userId') hubspotUserId: string): Promise<UserResponse> {
-        return this.userService.getByHubspotUserId(hubspotUserId);
+    async getUserByHubSpotUserId
+    (@Param('userId') hubspotUserId: string,
+     @Param('portalId', ParseIntPipe) portalId: number,
+    ): Promise<UserResponse> {
+        return this.userService.getByHubspotUserId(hubspotUserId, portalId);
     }
 }

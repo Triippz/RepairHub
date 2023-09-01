@@ -6,7 +6,11 @@
   "main": "App.tsx",
   "scripts": {
     "dev": "hs-ui-extensions-dev-server dev",
-    "build": "hs-ui-extensions-dev-server build"
+    "build": "hs-ui-extensions-dev-server build",
+    "lint": "eslint . --ext .tsx,.ts",
+    "lint:fix": "eslint . --ext .tsx,.ts --fix",
+    "check:types": "tsc --noEmit --jsx react-jsx --esModuleInterop --lib WebWorker --lib esnext --skipLibCheck Extension.tsx",
+    "check": "npm run lint && npm run check:types"
   },
   "repository": {
     "type": "git",
@@ -14,7 +18,13 @@
   },
   "dependencies": {
     "@hubspot/ui-extensions": "latest",
-    "axios": "^1.4.0",
     "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@hubspot/eslint-config-ui-extensions": "^0.7.2",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "typescript": "^5.1.6"
   }
 }
