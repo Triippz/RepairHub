@@ -5,14 +5,13 @@ exports.main = async (context = {}, sendResponse) => {
     const {hubspotUserId, portalId} = context.parameters
     const apiKey = process.env["APP_API_KEY"];
 
+    console.log(typeof hubspotUserId, typeof portalId)
     try {
-        const response = await axios.get(`https://api.repairhub.lol/users/hubspot/${hubspotUserId}/${portalId}`, {
+        const response = await axios.get(`http://localhost:3000/users/hubspot/${hubspotUserId}/${portalId}`, {
             headers: {
                 'x-api-key': apiKey,
             }
         });
-
-        console.log("RESPONSE", response.data);
 
         sendResponse({
             status: "SUCCESS",

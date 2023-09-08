@@ -1,6 +1,6 @@
 import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { AppModule } from './app.module';
-import {Logger, ValidationPipe} from "@nestjs/common";
+import {BadRequestException, Logger, ValidationError, ValidationPipe} from "@nestjs/common";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 
@@ -12,6 +12,16 @@ async function bootstrap() {
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+
+  app.useGlobalPipes(
+      new ValidationPipe({
+        exceptionFactory: (validationErrors: ValidationError[] = []) => {
+          console.error(JSON.stringify(validationErrors));
+          return new BadRequestException(validationErrors);
+        },
+        transform: true,
+      }),
+  );
 
   const config = new DocumentBuilder()
       .setTitle("Gym Sync")

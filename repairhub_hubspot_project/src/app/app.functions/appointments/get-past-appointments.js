@@ -6,13 +6,12 @@ exports.main = async (context = {}, sendResponse) => {
     const apiKey = process.env["APP_API_KEY"];
 
     try {
-        const response = await axios.get(`http://localhost:3000/appointments/past/user/${appUserId}`, {
+        const response = await axios.get(`https://api.repairhub.lol/appointments/past/user/${appUserId}`, {
             headers: {
                 'x-api-key': apiKey,
             }
         });
 
-        console.log(response.data)
         sendResponse({
             status: "SUCCESS",
             body: response.data
@@ -20,7 +19,7 @@ exports.main = async (context = {}, sendResponse) => {
     } catch (e) {
         sendResponse({
             status: "ERROR",
-            body: e.message
+            body: e.response.data.message
         });
     }
 }

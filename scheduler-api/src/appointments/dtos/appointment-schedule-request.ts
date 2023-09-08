@@ -1,24 +1,19 @@
-import {AppointmentType} from "@prisma/client";
-import {ApiProperty} from "@nestjs/swagger";
-import {IsDate, IsNumber, IsString} from "class-validator";
+import { AppointmentType } from '@prisma/client';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsNumber } from 'class-validator';
 
 export class AppointmentScheduleRequest {
-    @ApiProperty()
-    @IsDate()
-    startTime: Date;
+  @ApiProperty()
+  startTime: Date;
 
-    @ApiProperty()
-    @IsDate()
-    endTime: Date;
+  @ApiProperty()
+  @IsNumber()
+  durationInMinutes: number;
 
-    @ApiProperty()
-    @IsNumber()
-    serviceTechnicianId: number;
+  @ApiProperty()
+  @IsNumber()
+  serviceTechnicianId: number;
 
-    @ApiProperty()
-    appointmentType: AppointmentType;
-
-    @ApiProperty()
-    @IsString()
-    notes?: string;
+  @ApiProperty()
+  appointmentType: AppointmentType;
 }

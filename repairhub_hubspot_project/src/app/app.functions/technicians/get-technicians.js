@@ -2,11 +2,10 @@ const axios = require('axios');
 
 
 exports.main = async (context = {}, sendResponse) => {
-    const {appUserId} = context.parameters;
     const apiKey = process.env["APP_API_KEY"];
 
     try {
-        const response = await axios.get(`https://api.repairhub.lol/appointments/upcoming/user/${appUserId}`, {
+        const response = await axios.get(`https://api.repairhub.lol/svc-techs`, {
             headers: {
                 'x-api-key': apiKey,
             }

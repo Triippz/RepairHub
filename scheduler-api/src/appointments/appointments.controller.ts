@@ -11,8 +11,7 @@ import {
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { AppointmentScheduleRequest } from './dtos/appointment-schedule-request';
-import { Usr } from '../users/decorators/user.decorator';
-import { Role, User } from '@prisma/client';
+import { Role } from '@prisma/client';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AppRoles } from '../auth/decorators/role.decorator';
 import { AppointmentTimeRescheduleRequest } from './dtos/appointment-time-reschedule.request';

@@ -14,12 +14,32 @@
       "file": "./users/get-user-by-hub-user-id.js",
       "secrets": ["APP_API_KEY"]
     },
-    "getUpComingAppointments": {
+    "getUpcomingAppointments": {
       "file": "./appointments/get-upcoming-appointments.js",
       "secrets": ["APP_API_KEY"]
     },
     "getPastAppointments": {
       "file": "./appointments/get-past-appointments.js",
+      "secrets": ["APP_API_KEY"]
+    },
+    "deleteAppointment": {
+      "file": "./appointments/delete-appointment.js",
+      "secrets": ["APP_API_KEY"]
+    },
+    "createAppointment": {
+      "file": "./appointments/create-appointment.js",
+      "secrets": ["APP_API_KEY"]
+    },
+    "getTechnicians": {
+      "file": "./technicians/get-technicians.js",
+      "secrets": ["APP_API_KEY"]
+    },
+    "getTechnician": {
+      "file": "./technicians/get-technician.js",
+      "secrets": ["APP_API_KEY"]
+    },
+    "getTechnicianAvailability": {
+      "file": "./technicians/get-technician-availability.js",
       "secrets": ["APP_API_KEY"]
     }
   }

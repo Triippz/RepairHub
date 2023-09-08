@@ -6,6 +6,9 @@ export enum Routes {
     CREATE_USER = 'create_user',
     LOGIN = 'login',
     SCHEDULE_APPOINTMENT = 'schedule_appointment',
+    VIEW_APPOINTMENT = 'view_appointment',
+    EDIT_APPOINTMENT = 'edit_appointment',
+    DELETE_APPOINTMENT = 'delete_appointment',
 }
 
 interface RoutingContextType {

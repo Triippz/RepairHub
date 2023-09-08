@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {User} from "./entities/user.entity";
+import {User} from "./models/entities/user.entity";
 
 export const Context = React.createContext({
     currentUser: null,
