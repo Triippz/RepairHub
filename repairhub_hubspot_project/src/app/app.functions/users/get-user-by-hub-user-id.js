@@ -7,7 +7,7 @@ exports.main = async (context = {}, sendResponse) => {
 
     console.log(typeof hubspotUserId, typeof portalId)
     try {
-        const response = await axios.get(`http://localhost:3000/users/hubspot/${hubspotUserId}/${portalId}`, {
+        const response = await axios.get(`https://api.repairhub.lol/users/hubspot/${hubspotUserId}/${portalId}`, {
             headers: {
                 'x-api-key': apiKey,
             }
